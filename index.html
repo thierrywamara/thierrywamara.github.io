@@ -1,261 +1,242 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ituri Konnect</title>
-  <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Segoe UI', Arial, sans-serif; 
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: white; min-height: 100vh;
-    }
-    .header {
-      background: rgba(0,0,0,0.3); padding: 20px; text-align: center;
-      border-bottom: 3px solid #FFD700;
-    }
-    .header h1 { font-size: 2.5em; margin-bottom: 5px; }
-    .container { max-width: 500px; margin: 20px auto; padding: 15px; }
-    .card {
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-      border-radius: 15px; padding: 20px; margin-bottom: 15px;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    button {
-      background: #FFD700; color: #1e3c72; border: none;
-      padding: 12px; border-radius: 8px; font-size: 16px;
-      font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px;
-    }
-    button:hover { background: #FFC400; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
-    button.google { background: white; color: #444; }
-    input, select, textarea {
-      width: 100%; padding: 12px; border: none; border-radius: 8px;
-      background: rgba(255,255,255,0.2); color: white; font-size: 16px; margin-bottom: 10px;
-    }
-    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.6); }
-    select option { color: black; }
-    .tabs { display: flex; margin-bottom: 15px; }
-    .tab {
-      flex: 1; padding: 10px; text-align: center; cursor: pointer;
-      background: rgba(0,0,0,0.2); border-radius: 8px 8px 0 0;
-    }
-    .tab.active { background: #FFD700; color: #1e3c72; font-weight: bold; }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-    #messages { height: 250px; overflow-y: auto; background: rgba(0,0,0,0.2); 
-      padding: 10px; border-radius: 10px; margin-bottom: 10px; }
-    .msg { background: rgba(255,255,255,0.15); padding: 8px; border-radius: 8px; margin-bottom: 8px; }
-    .msg .user { font-weight: bold; color: #FFD700; font-size: 0.85em; }
-    .msg .territoire { font-size: 0.75em; opacity: 0.7; }
-    .msg .wa { color: #25D366; text-decoration: none; margin-left: 5px; }
-    #recaptcha-container { margin: 10px 0; }
-    .status { text-align: center; padding: 10px; font-size: 0.9em; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ituri Konnect - Forum de Bunia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --danger: #dc2626;
+            --google: #db4437;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+        .container {
+            max-width: 700px;
+            margin: 32px auto;
+            padding: 0 20px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border .2s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        textarea { resize: vertical; min-height: 100px; }
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .btn:hover { background: var(--primary-dark); }
+        .btn-google { background: var(--google); width: 100%; }
+        .btn-google:hover { background: #c33d2e; }
+        .btn-danger { background: var(--danger); padding: 8px 14px; font-size: 14px; }
+        .btn-danger:hover { background: #b91c1c; }
+        .post {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+        .post h4 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .post-meta {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+        .hidden { display: none; }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🌍 Ituri Konnect</h1>
-    <p>5 Territoires, Une Communauté</p>
-  </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">Ituri Konnect</div>
+            <div class="user-badge">
+                <span id="userInfo"></span>
+                <button id="logoutBtn" class="btn btn-danger hidden">Sortir</button>
+            </div>
+        </div>
+    </nav>
 
-  <div class="container">
-    <div class="card">
-      <div id="status" class="status">Choisis ta méthode de connexion</div>
-      
-      <div id="loginDiv">
-        <div class="tabs">
-          <div class="tab active" onclick="switchTab('google')">Google</div>
-          <div class="tab" onclick="switchTab('email')">Email</div>
-          <div class="tab" onclick="switchTab('phone')">WhatsApp</div>
+    <div class="container">
+        <div id="authBox" class="card">
+            <h3>Rejoins la communauté de Bunia</h3>
+            <p style="color:var(--text-muted); margin-bottom:16px; font-size:15px;">Connecte-toi pour participer aux discussions</p>
+            <button id="googleBtn" class="btn btn-google">Continuer avec Google</button>
         </div>
 
-        <div id="google" class="tab-content active">
-          <button id="googleBtn" class="google">Se connecter avec Google</button>
+        <div id="postForm" class="card hidden">
+            <h3>Créer une discussion</h3>
+            <input type="text" id="titre" placeholder="Titre de votre message">
+            <textarea id="message" placeholder="Partage ton idée, une info, une question..."></textarea>
+            <button onclick="ajouterPost()" class="btn">Publier</button>
         </div>
 
-        <div id="email" class="tab-content">
-          <input type="email" id="emailInput" placeholder="Email">
-          <input type="password" id="passwordInput" placeholder="Mot de passe">
-          <button id="emailLoginBtn">Se connecter</button>
-          <button id="emailSignupBtn">Créer un compte</button>
+        <div id="liste-posts">
+            <div class="post">
+                <h4>Bienvenue sur Ituri Konnect !</h4>
+                <div class="post-meta">Posté par Admin · 1 juin 2026</div>
+                <p>Ceci est le premier message du forum. Partagez vos idées, actualités et questions sur Bunia et l'Ituri. Karibu !</p>
+            </div>
         </div>
-
-        <div id="phone" class="tab-content">
-          <input type="tel" id="phoneInput" placeholder="Numéro WhatsApp : +243...">
-          <div id="recaptcha-container"></div>
-          <button id="phoneBtn">Envoyer le code SMS</button>
-          <input type="text" id="codeInput" placeholder="Code reçu par SMS" style="display:none;">
-          <button id="verifyBtn" style="display:none;">Vérifier</button>
-        </div>
-      </div>
-
-      <div id="profileDiv" style="display:none;">
-        <p>Bienvenue <span id="userName"></span> 👋</p>
-        <select id="territoireSelect">
-          <option value="">Choisis ton territoire</option>
-          <option value="Aru">Aru</option>
-          <option value="Djugu">Djugu</option>
-          <option value="Irumu">Irumu</option>
-          <option value="Mahagi">Mahagi</option>
-          <option value="Mambasa">Mambasa</option>
-        </select>
-        <input type="tel" id="whatsappInput" placeholder="Confirme ton WhatsApp : +243...">
-        <button id="saveProfileBtn">Enregistrer mon profil</button>
-        <button id="logoutBtn">Se déconnecter</button>
-      </div>
     </div>
 
-    <div class="card" id="chatCard" style="display:none;">
-      <h3>💬 Chat Ituri</h3>
-      <div id="messages"></div>
-      <textarea id="messageInput" placeholder="Message..." rows="2"></textarea>
-      <button id="sendBtn">Envoyer</button>
-    </div>
-  </div>
+    <footer>Ituri Konnect © 2026 · Fait avec ❤️ pour Bunia</footer>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, 
-             createUserWithEmailAndPassword, signInWithEmailAndPassword, 
-             RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+    <!-- COLLE TON SCRIPT ICI, JUSTE AVANT </body> -->
+    <script type="module">
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js'
+      import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js'
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyA_tjMqbLODx1lM5B1vE_POQaS1i-iK8mM",
-      authDomain: "ituri-konnect.firebaseapp.com",
-      projectId: "ituri-konnect",
-      storageBucket: "ituri-konnect.appspot.com",
-      messagingSenderId: "1092729090655",
-      appId: "1:1092729090655:web:4c2a0b219b385b50803fbd"
-    };
+      const firebaseConfig = {
+        apiKey: "AIzaSyCt45URjqGbJiWaSivR2WgkHf7gNhZsOBc",
+        authDomain: "ituri-konnect.firebaseapp.com",
+        projectId: "ituri-konnect",
+        storageBucket: "ituri-konnect.firebasestorage.app",
+        messagingSenderId: "371067100688",
+        appId: "1:371067100688:web:507efe8b805c310d367495",
+        measurementId: "G-CYHKRWVR60"
+      };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
 
-    // Tabs
-    window.switchTab = (tab) => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
-      document.getElementById(tab).classList.add('active');
-    }
+      document.getElementById('googleBtn').onclick = () => signInWithRedirect(auth, provider);
+      document.getElementById('logoutBtn').onclick = () => signOut(auth);
 
-    // Google
-    document.getElementById('googleBtn').onclick = () => {
-      signInWithPopup(auth, new GoogleAuthProvider()).catch(e => showError(e));
-    };
-
-    // Email
-    document.getElementById('emailSignupBtn').onclick = () => {
-      const email = emailInput.value, pass = passwordInput.value;
-      createUserWithEmailAndPassword(auth, email, pass).catch(e => showError(e));
-    };
-    document.getElementById('emailLoginBtn').onclick = () => {
-      const email = emailInput.value, pass = passwordInput.value;
-      signInWithEmailAndPassword(auth, email, pass).catch(e => showError(e));
-    };
-
-    // Phone/WhatsApp
-    let confirmationResult;
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {'size': 'normal'});
-    
-    document.getElementById('phoneBtn').onclick = () => {
-      const phone = phoneInput.value;
-      signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
-        .then((result) => {
-          confirmationResult = result;
-          codeInput.style.display = 'block';
-          verifyBtn.style.display = 'block';
-          phoneBtn.style.display = 'none';
-          status.textContent = 'Code envoyé sur WhatsApp/SMS !';
-        }).catch(e => showError(e));
-    };
-
-    document.getElementById('verifyBtn').onclick = () => {
-      confirmationResult.confirm(codeInput.value).catch(e => showError(e));
-    };
-
-    // Auth State
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        loginDiv.style.display = 'none';
-        profileDiv.style.display = 'block';
-        chatCard.style.display = 'block';
-        userName.textContent = user.displayName || user.email || user.phoneNumber;
-        
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists()) {
-          territoireSelect.value = userDoc.data().territoire || '';
-          whatsappInput.value = userDoc.data().whatsapp || user.phoneNumber || '';
+      getRedirectResult(auth).then((result) => {
+        if (result) {
+          alert('SUCCESS: Bienvenue ' + result.user.displayName);
         }
-        loadMessages();
-        status.textContent = 'Connecté ✅';
-      } else {
-        loginDiv.style.display = 'block';
-        profileDiv.style.display = 'none';
-        chatCard.style.display = 'none';
-        status.textContent = 'Choisis ta méthode de connexion';
-      }
-    });
-
-    // Sauvegarder profil
-    document.getElementById('saveProfileBtn').onclick = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        await setDoc(doc(db, "users", user.uid), {
-          territoire: territoireSelect.value,
-          whatsapp: whatsappInput.value,
-          name: user.displayName || user.email || user.phoneNumber
-        }, { merge: true });
-        status.textContent = 'Profil enregistré ✅';
-      }
-    };
-
-    document.getElementById('logoutBtn').onclick = () => signOut(auth);
-
-    // Chat
-    document.getElementById('sendBtn').onclick = async () => {
-      const text = messageInput.value.trim();
-      const user = auth.currentUser;
-      const userDoc = await getDoc(doc(db, "users", user.uid));
-      const data = userDoc.exists() ? userDoc.data() : {};
-      
-      if (text && user) {
-        await addDoc(collection(db, "messages"), {
-          text: text,
-          user: data.name || user.displayName || user.email || user.phoneNumber,
-          uid: user.uid,
-          territoire: data.territoire || 'Inconnu',
-          whatsapp: data.whatsapp || '',
-          timestamp: serverTimestamp()
-        });
-        messageInput.value = '';
-      }
-    };
-
-    function loadMessages() {
-      const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
-      onSnapshot(q, (snapshot) => {
-        messagesDiv.innerHTML = '';
-        snapshot.forEach((doc) => {
-          const d = doc.data();
-          const waLink = d.whatsapp ? `<a href="https://wa.me/${d.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" class="wa">📱</a>` : '';
-          const div = document.createElement('div');
-          div.className = 'msg';
-          div.innerHTML = `<div class="user">${d.user} <span class="territoire">[${d.territoire}]</span>${waLink}</div><div>${d.text}</div>`;
-          messagesDiv.appendChild(div);
-        });
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }).catch((error) => {
+        alert('ERREUR: ' + error.code);
       });
-    }
 
-    function showError(e) {
-      status.innerHTML = 'Erreur ❌<br>' + e.message;
-    }
-  </script>
+      onAuthStateChanged(auth, (user) => {
+        const authBox = document.getElementById('authBox');
+        const postForm = document.getElementById('postForm');
+        const userInfo = document.getElementById('userInfo');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        if (user) {
+          authBox.classList.add('hidden');
+          postForm.classList.remove('hidden');
+          logoutBtn.classList.remove('hidden');
+          userInfo.textContent = user.displayName;
+        } else {
+          authBox.classList.remove('hidden');
+          postForm.classList.add('hidden');
+          logoutBtn.classList.add('hidden');
+          userInfo.textContent = '';
+        }
+      });
+
+      window.ajouterPost = function() {
+        const titre = document.getElementById('titre').value.trim();
+        const message = document.getElementById('message').value.trim();
+        const user = auth.currentUser;
+        
+        if (!titre || !message) return alert('Remplis le titre et le message');
+        if (!user) return alert('Connecte-toi d\'abord');
+
+        const date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        const nouveauPost = `
+            <div class="post">
+                <h4>${titre}</h4>
+                <div class="post-meta">Posté par ${user.displayName} · ${date}</div>
+                <p>${message}</p>
+            </div>
+        `;
+        
+        document.getElementById('liste-posts').insertAdjacentHTML('afterbegin', nouveauPost);
+        document.getElementById('titre').value = '';
+        document.getElementById('message').value = '';
+      }
+    </script>
 </body>
 </html>
